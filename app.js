@@ -38,7 +38,10 @@ const userRouter = require('./router/user')
 app.use('/api', userRouter)
 // 导入并使用用户信息的路由模块
 const userinfoRouter = require('./router/userinfo')
-app.use('/my', userinfoRouter)
+app.use('/info', userinfoRouter)
+// 导入并使用用户成绩的路由模块
+const usergradeRouter = require('./router/usergrade')
+app.use('/grade', usergradeRouter)
 
 
 // 定义错误级别的中间件

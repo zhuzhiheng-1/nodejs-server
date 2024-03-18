@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken')
 const config = require('../config')
 
 // 注册新用户的处理函数
-exports.regUser = (req, res) => {
+exports.register = (req, res) => {
   // 获取客户端提交到服务器的用户信息
   const userinfo = req.body
   // 对表单中的数据，进行合法性的校验
