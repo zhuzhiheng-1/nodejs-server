@@ -64,16 +64,38 @@ exports.login = (req, res) => {
     // TODO：判断密码是否正确
     const compareResult = bcrypt.compareSync(userinfo.password, results[0].password)
     if (!compareResult) return res.cc('登录失败！')
-
+    console.log(results[0])
     // TODO：在服务器端生成 Token 的字符串
-    const user = { ...results[0], password: '', user_pic: '' }
+    // 将其中的 password 设为了空字符串，这样可以确保敏感信息不会在生成 Token 时被包含进去
+    const user = { ...results[0], password: '',avatar:''}
     // 对用户的信息进行加密，生成 Token 字符串
     const tokenStr = jwt.sign(user, config.jwtSecretKey, { expiresIn: config.expiresIn })
     // 调用 res.send() 将 Token 响应给客户端
     res.send({
-      status: 0,
+      code:200,
       message: '登录成功！',
-      token:  'Bearer ' + tokenStr,
+      token:  'Beaerr ' + tokenStr
+    })
+  })
+}
+
+// 获取用户信息
+exports.getInfo = (req, res) => {
+  const token = req.query.token.split(' ')[1]
+  console.log(token)
+  jwt.verify(token, config.jwtSecretKey, (err, decoded) => {
+    if (err) {
+      return res.send({
+        code: 500,
+        message: '获取用户信息失败',
+        data: null
+      })
+    }
+    console.log(decoded)
+    res.send({
+      code: 200,
+      message: '获取用户信息成功',
+      data: decoded
     })
   })
 }

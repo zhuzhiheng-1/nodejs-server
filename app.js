@@ -3,6 +3,7 @@ const express = require('express')
 // 创建服务器的实例对象
 const app = express()
 const joi = require('joi')
+const bodyParser = require('body-parser'); // 引入 body-parser 模块
 
 // 导入并配置 cors 中间件
 const cors = require('cors')
@@ -31,11 +32,14 @@ app.use((req, res, next) => {
 const expressJWT = require('express-jwt')
 const config = require('./config')
 
-app.use(expressJWT({ secret: config.jwtSecretKey }).unless({ path: [/^\/api/] }))
+// 使用 body-parser 中间件，解析请求体
+app.use(bodyParser.json());
+
+// app.use(expressJWT({ secret: config.jwtSecretKey }).unless({ path: [/^\/api/] }))
 
 // 导入并使用用户路由模块
 const userRouter = require('./router/user')
-app.use('/api', userRouter)
+app.use('', userRouter)
 // 导入并使用用户信息的路由模块
 const userinfoRouter = require('./router/userinfo')
 app.use('/info', userinfoRouter)
@@ -56,5 +60,5 @@ app.use((err, req, res, next) => {
 
 // 启动服务器
 app.listen(3007, () => {
-  console.log('api server running at http://127.0.0.1:3007')
+  console.log('api server running at http://localhost:3007')
 })
