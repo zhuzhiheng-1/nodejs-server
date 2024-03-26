@@ -3,7 +3,7 @@ const db = require('../db/index')
 // 导入处理密码的模块
 const bcrypt = require('bcryptjs')
 
-// 获取用户基本信息的处理函数
+// 获取当前用户基本信息的处理函数
 exports.getUserInfo = (req, res) => {
   // 定义查询用户信息的 SQL 语句
   const sql = `select id, username, nickname, user_pic, student_id from users where id=?`
@@ -22,7 +22,71 @@ exports.getUserInfo = (req, res) => {
     })
   })
 }
+// 获取所有学生列表的处理函数
+exports.getStudentList = (req, res) => {
+  const sql = `SELECT id, student_id, nickname, classname, major FROM users WHERE role='student'`
+  db.query(sql, (err, results) => {
+    if (err) return res.cc(err)
+    res.send({
+      status: 0,
+      message: '获取学生列表成功！',
+      data: results,
+    })
+  })
+}
+// 删除用户的处理函数
+exports.deleteUser = (req, res) => {
+  const userId = req.params.id; // 获取前端传来的用户 ID
 
+  const sql = 'DELETE FROM users WHERE id = ?'; 
+
+  db.query(sql, [userId], (err, results) => { 
+    if (err) { // 错误处理
+      return res.status(500).json({
+        status: 500,
+        message: '删除用户失败',
+        error: err.message
+      });
+    }
+    // 如果未找到符合条件的记录
+    if (results.affectedRows === 0) { 
+      return res.status(404).json({
+        status: 404,
+        message: '未找到符合条件的用户信息'
+      });
+    }
+
+    res.status(200).json({
+      status: 200,
+      message: '删除用户成功',
+      data: results
+    });
+  });
+};
+// 编辑用户的处理函数
+exports.editUser = (req, res) => {
+  const userId = req.params.id;
+  const { nickname, student_id, classname,major } = req.body;
+  // 构造 SQL 更新语句
+  const sql = `UPDATE users SET student_id=?, nickname=?, classname=?, major=? WHERE id=?`;
+  // 执行 SQL 更新操作
+  db.query(sql, [student_id, nickname, classname, major, userId], (err, results) => {
+    if (err) {
+      return res.status(500).json({
+        status: 500,
+        message: '保存编辑失败',
+        error: err.message
+      });
+    }
+
+    // 返回保存成功的响应
+    res.status(200).json({
+      status: 200,
+      message: '保存编辑成功',
+      data: results
+    });
+  });
+};
 // 更新用户基本信息的处理函数
 exports.updateUserInfo = (req, res) => {
   // 定义待执行的 SQL 语句
