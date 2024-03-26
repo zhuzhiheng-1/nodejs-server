@@ -10,12 +10,12 @@ router.get('/all', grade_handler.getAllGrade)
 router.post('/add', grade_handler.addGrade)
 
 // 删除成绩
-router.delete('/delete/:id', grade_handler.deleteGrade)
+router.delete('/delete/:student_id', grade_handler.deleteGrade)
 
 // 修改成绩
-router.put('/update/:id', grade_handler.updateGrade)
+router.put('/update/:student_id', grade_handler.updateGrade)
 
 // 查询成绩
-router.get('/get/:id', grade_handler.getGrade)
+router.get('/get/:student_id', grade_handler.getGrade)
 
 module.exports = router
