@@ -99,3 +99,11 @@ exports.getInfo = (req, res) => {
     })
   })
 }
+
+// 登出
+exports.logout = (req, res) => {
+  res.send({
+    code: 200,
+    message: '退出成功'
+  })
+}

@@ -15,5 +15,7 @@ router.post('/register', expressJoi(reg_login_schema), user_handler.register)
 router.post('/login', expressJoi(reg_login_schema), user_handler.login)
 // 获取用户信息
 router.get('/info', user_handler.getInfo)
+// 登出
+router.post('/logout', user_handler.logout)
 
 module.exports = router
