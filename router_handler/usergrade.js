@@ -52,16 +52,11 @@ exports.updateGrade = (req, res) => {
 // 查询成绩
 exports.getGrade = (req, res) => {
   const { student_id } = req.params;
-  const sql = `
-    SELECT grade.*, users.nickname
-    FROM grade
-    JOIN users ON grade.student_id = users.student_id
-    WHERE grade.student_id = ?
-  `;
+  const sql = `SELECT * FROM grade WHERE student_id = ?`;
   db.query(sql, student_id, (err, results) => {
     if (err) return res.cc(err);
     if (results.length === 0) return res.cc('查询失败，记录不存在！', 1);
-    res.send({ status: 0, message: '查询成功！', data: results[0] });
+    res.send({ status: 0, message: '查询成功！', data: results });
   });
 };
 
