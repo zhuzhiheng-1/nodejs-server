@@ -18,4 +18,7 @@ router.put('/update/:student_id', grade_handler.updateGrade)
 // 查询成绩
 router.get('/get/:student_id', grade_handler.getGrade)
 
+// 用户提交成绩
+router.post('/submit', grade_handler.submitGrade)
+
 module.exports = router

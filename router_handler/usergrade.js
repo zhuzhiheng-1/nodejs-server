@@ -65,3 +65,15 @@ exports.getGrade = (req, res) => {
   });
 };
 
+// 用户提交成绩
+exports.submitGrade = (req, res) => {
+  const { student_id, theory_score, basic_score, extension_score} = req.body;
+  total_score = eval(`${theory_score} + ${basic_score} + ${extension_score}`);
+  const examdate = new Date();
+  const sql = 'INSERT INTO grade (student_id, theory_score, basic_score, extension_score, total_score, exam_date) VALUES (?, ?, ?, ?, ?, ?)';
+  db.query(sql, [student_id, theory_score, basic_score, extension_score, total_score, examdate], (err, results) => {
+    if (err) return res.cc(err);
+    if (results.affectedRows === 0) return res.cc('提交失败，记录已存在！', 1);
+    res.cc('提交成功！', 0);
+  });
+};
