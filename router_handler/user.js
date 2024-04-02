@@ -67,7 +67,7 @@ exports.login = (req, res) => {
     console.log(results[0])
     // TODO：在服务器端生成 Token 的字符串
     // 将其中的 password 设为了空字符串，这样可以确保敏感信息不会在生成 Token 时被包含进去
-    const user = { ...results[0], password: '',avatar:''}
+    const user = { ...results[0], password: ''}
     // 对用户的信息进行加密，生成 Token 字符串
     const tokenStr = jwt.sign(user, config.jwtSecretKey, { expiresIn: config.expiresIn })
     // 调用 res.send() 将 Token 响应给客户端
